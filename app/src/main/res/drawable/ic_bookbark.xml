@@ -1,0 +1,20 @@
+  <vector xmlns:android="http://schemas.android.com/apk/res/android"
+      android:width="48dp"
+      android:height="48dp"
+      android:viewportWidth="48"
+      android:viewportHeight="48">
+
+    <!-- Transparent background -->
+    <path
+        android:pathData="M0,0h48v48h-48z"
+        android:fillColor="#ffffff" />
+
+    <!-- Adjusted path to fit the icon within the viewport -->
+    <path
+        android:pathData="M15,15C15,13.895 15.895,13 17,13H31C32.105,13 33,13.895 33,15V35L24,30.5L15,35V15Z"
+        android:strokeLineJoin="round"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:strokeColor="#180E25"
+        android:strokeLineCap="round" />
+  </vector>

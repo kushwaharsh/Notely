@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.NotesAppWithHilt" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Set the action bar color -->
+        <item name="colorPrimary">@android:color/black</item> <!-- Action bar background color -->
+        <item name="colorOnPrimary">@android:color/white</item> <!-- Action bar text/icon color -->
+    </style>
+
+    <style name="Theme.NotesAppWithHilt" parent="Base.Theme.NotesAppWithHilt" />
+</resources>
