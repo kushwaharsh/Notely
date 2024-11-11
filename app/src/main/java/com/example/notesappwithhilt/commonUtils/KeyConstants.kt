@@ -3,9 +3,10 @@ package com.example.notesappwithhilt.commonUtils
 object KeyConstants {
 
     const val SUCCESS = 200
+    const val SUCCESSCODE = 201
     const val TAG = "MYNOTESAPP"
     const val PREF_NAME = "notes_app1"
-    const val BASE_URL = "https://notesappbackend-ojkt.onrender.com/api/"
+    const val BASE_URL = "https://notes-app-backend-lyart.vercel.app/api/"
    // const val BASE_URL = "https://notes-app-backend-n60srvw5u-kushwaharshs-projects.vercel.app/"
     const val REGISTER_USER = "auth/register"
     const val SIGN_IN = "auth/login"

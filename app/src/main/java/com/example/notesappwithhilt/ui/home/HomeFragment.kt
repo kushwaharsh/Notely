@@ -237,7 +237,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("appToken", prefManager.accessToken ?: "")
-        authViewModel.getAllNotes(prefManager.accessToken ?: "")
+        authViewModel.getAllNotes(prefManager.accessToken ?: "" , prefManager.logginUserData?._id?:"")
         authViewModel.getAllTags(prefManager.logginUserData?._id.toString())
     }
 }

@@ -131,9 +131,6 @@ class CreateNoteFragment : Fragment() {
             binding.whiteBoardView.clearBoard()
         }
 
-
-
-
     }
 
     private fun initview() {
@@ -143,7 +140,6 @@ class CreateNoteFragment : Fragment() {
         binding.saveBtn.setOnClickListener {
             saveNote()
         }
-
     }
 
     private fun convertBitmapToBase64(bitmap: Bitmap): String {
@@ -152,7 +148,6 @@ class CreateNoteFragment : Fragment() {
         val byteArray = outputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
-
     private fun saveNote() {
         val title = binding.noteTitleTv.text.toString()
         val content = binding.noteContentTv.text.toString()
@@ -185,8 +180,9 @@ class CreateNoteFragment : Fragment() {
                 put("whiteboard", whiteboardBase64)  // Add Base64 content if available
             }
             put("isBookmarked", isBookmarked.toString())
-            put("tag", createdTag ?: "none")
+            put("tag", createdTag ?: "All")
             put("noteDeadline", noteDeadline ?: "none")
+            put("userId", App.app.prefManager.logginUserData?._id?:"")
         }
 
         // Call ViewModel method to create the note

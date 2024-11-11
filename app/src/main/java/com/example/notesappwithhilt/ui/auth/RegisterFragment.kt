@@ -1,6 +1,7 @@
 package com.example.notesappwithhilt.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,34 +46,35 @@ class RegisterFragment : Fragment() {
     }
 
     private fun observer() {
-        authViewModel.registerUser.observe(viewLifecycleOwner){
-            when(it){
-
+        authViewModel.registerUser.observe(viewLifecycleOwner) {
+            when (it) {
                 Resource.Loading -> {
                     ProgressBarUtils.showProgressDialog(requireContext())
                 }
                 is Resource.Success -> {
                     ProgressBarUtils.hideProgressDialog()
-                    if (it.value?.statusCode == KeyConstants.SUCCESS){
+                    responseData = it.value // Assign the response data here
+                    if (responseData?.statusCode == KeyConstants.SUCCESSCODE) {
                         binding.signInWarning.visibility = View.GONE
-                        prefManager.isLoggedIn = true
-                        prefManager.accessToken = responseData?.token
-                        prefManager.logginUserData = responseData?.data
+                        App.app.prefManager.isLoggedIn = true
+                        App.app.prefManager.accessToken = responseData?.token
+                        App.app.prefManager.logginUserData = responseData?.data
+                        Log.d("prefmanager", responseData?.token ?: "")
                         findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                    Toast.makeText(requireContext(), "Registration Successfull", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        ProgressBarUtils.hideProgressDialog()
+                        Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
+                    } else {
                         binding.signInWarning.visibility = View.VISIBLE
                     }
                 }
                 is Resource.Faliure -> {
                     ProgressBarUtils.hideProgressDialog()
+                    Toast.makeText(requireContext(), "Registration Failed", Toast.LENGTH_SHORT).show()
                 }
                 null -> {}
             }
         }
     }
+
 
     private fun listener() {
 
@@ -87,15 +89,15 @@ class RegisterFragment : Fragment() {
             params["password"] = binding.enterPassword.text.toString()
             authViewModel.registerUser(params)
 
-            when(responseData?.success ){
-                true -> {
-
-                }
-                false -> {
-
-                }
-                null -> {}
-            }
+//            when(responseData?.success ){
+//                true -> {
+//
+//                }
+//                false -> {
+//
+//                }
+//                null -> {}
+//            }
         }
     }
 

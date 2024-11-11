@@ -147,7 +147,8 @@ class DetailedNoteFragment : Fragment() {
             dialogBinding.btnConfirm.setOnClickListener {
                 authViewModel.deleteNote(
                     App.app.prefManager.accessToken.toString(),
-                    receivedNoteId.toString()
+                    receivedNoteId.toString(),
+                    App.app.prefManager.logginUserData?._id?:"",
                 )
                 layoutDialog.dismiss()
             }
@@ -188,7 +189,8 @@ class DetailedNoteFragment : Fragment() {
 
         authViewModel.getNoteById(
             App.app.prefManager.accessToken.toString(),
-            receivedNoteId.toString()
+            receivedNoteId.toString(),
+            App.app.prefManager.logginUserData?._id?:""
         )
 
     }

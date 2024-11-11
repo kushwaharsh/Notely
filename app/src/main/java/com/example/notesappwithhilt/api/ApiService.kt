@@ -26,7 +26,8 @@ interface ApiService {
     suspend fun signInUser(@Body params: HashMap<String, String>): SignUpResponse?
 
     @GET(KeyConstants.GET_ALL_NOTES)
-    suspend fun getAllNotes(@Header("Authorization") token: String) : GetAllNotesResponse?
+    suspend fun getAllNotes(@Header("Authorization") token: String,
+                            @Query("userId") userId: String) : GetAllNotesResponse?
 
     @POST(KeyConstants.CREATE_NEW_NOTE)
     suspend fun createNewNote(
@@ -35,16 +36,19 @@ interface ApiService {
 
     @GET(KeyConstants.GET_NOTE_BY_ID)
     suspend fun getNoteById(@Header("Authorization") token: String,
-                            @Query("id") noteId: String) : NoteByIdResponse
+                            @Query("id") noteId: String,
+                            @Query("userId") userId: String) : NoteByIdResponse
 
     @DELETE(KeyConstants.DELETE_NOTE)
     suspend fun deleteNote(@Header("Authorization") token: String,
-                            @Query("id") noteId: String) : CreateNoteResponse
+                            @Query("id") noteId: String,
+                           @Query("userId") userId: String) : CreateNoteResponse
 
     @POST(KeyConstants.UPDATE_NOTE)
     suspend fun updateNote(@Header("Authorization") token: String,
                            @Query("id") noteId: String,
-                           @Body params: HashMap<String, String>) : NoteByIdResponse
+                           @Body params: HashMap<String, String>,
+                           @Query("userId") userId: String) : NoteByIdResponse
 
     @POST(KeyConstants.CREATE_TAG)
     suspend fun createTag(@Body params: HashMap<String, String>) : CreateTagResponse

@@ -127,7 +127,7 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun initview() {
-        authViewModel.getNoteById(App.app.prefManager.accessToken.toString(), receivedNoteId)
+        authViewModel.getNoteById(App.app.prefManager.accessToken.toString(), receivedNoteId , App.app.prefManager.logginUserData?._id?:"")
     }
 
     private fun saveNote() {
@@ -169,7 +169,7 @@ class EditNoteFragment : Fragment() {
         }
 
         // Call ViewModel method to create the note
-        authViewModel.updateNote(App.app.prefManager.accessToken.toString(), receivedNoteId, params)
+        authViewModel.updateNote(App.app.prefManager.accessToken.toString(), receivedNoteId, params , App.app.prefManager.logginUserData?._id?:"")
     }
 
     private fun convertBitmapToBase64(bitmap: Bitmap): String {

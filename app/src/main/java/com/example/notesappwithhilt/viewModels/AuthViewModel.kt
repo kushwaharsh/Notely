@@ -42,10 +42,10 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
     private val _getAllNotes : MutableLiveData<Resource<GetAllNotesResponse?>?> = MutableLiveData()
     val getAllNotes : LiveData<Resource<GetAllNotesResponse?>?>
         get() = _getAllNotes
-    fun getAllNotes(token: String){
+    fun getAllNotes(token: String , userId: String){
         viewModelScope.launch {
             _getAllNotes.value = Resource.Loading
-            _getAllNotes.value = userRepository.getAllNotes(token)
+            _getAllNotes.value = userRepository.getAllNotes(token , userId)
         }
     }
 
@@ -62,30 +62,30 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
     private val _getNoteById : MutableLiveData<Resource<NoteByIdResponse?>?> = MutableLiveData()
     val getNoteById : LiveData<Resource<NoteByIdResponse?>?>
         get() = _getNoteById
-    fun getNoteById(token: String , noteId: String){
+    fun getNoteById(token: String , noteId: String , userId: String){
         viewModelScope.launch {
             _getNoteById.value = Resource.Loading
-            _getNoteById.value = userRepository.getNoteById(token , noteId)
+            _getNoteById.value = userRepository.getNoteById(token , noteId , userId)
         }
     }
 
     private val _deleteNote : MutableLiveData<Resource<CreateNoteResponse?>?> = MutableLiveData()
     val deleteNote : LiveData<Resource<CreateNoteResponse?>?>
         get() = _deleteNote
-    fun deleteNote(token: String , noteId: String){
+    fun deleteNote(token: String , noteId: String , userId: String){
         viewModelScope.launch {
             _deleteNote.value = Resource.Loading
-            _deleteNote.value = userRepository.deleteNote(token , noteId)
+            _deleteNote.value = userRepository.deleteNote(token , noteId , userId)
         }
     }
 
     private val _updateNote : MutableLiveData<Resource<NoteByIdResponse?>?> = MutableLiveData()
     val updateNote : LiveData<Resource<NoteByIdResponse?>?>
         get() = _updateNote
-    fun updateNote(token: String , noteId: String , params: HashMap<String, String>){
+    fun updateNote(token: String , noteId: String , params: HashMap<String, String> , userId: String){
         viewModelScope.launch {
             _updateNote.value = Resource.Loading
-            _updateNote.value = userRepository.updateNote(token , noteId , params)
+            _updateNote.value = userRepository.updateNote(token , noteId , params , userId)
         }
     }
 
