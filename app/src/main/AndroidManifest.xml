@@ -18,12 +18,7 @@
         android:theme="@style/Theme.NotesAppWithHilt"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.profile.ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.introScreen.Intro1Activity"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.notesappwithhilt.R
+import com.example.notesappwithhilt.commonUtils.App
 import com.example.notesappwithhilt.commonUtils.BlurDialog
 import com.example.notesappwithhilt.databinding.FragmentBottomSheetBinding
 import com.example.notesappwithhilt.databinding.LabelDialogLayoutBinding
@@ -59,6 +60,18 @@ class BottomSheetFragment(var label: (String) -> Unit , var deadlineDate: (Strin
 
         binding.deadlineBtn.setOnClickListener {
             datePickerDialog()
+        }
+
+        binding.colloborateBtn.setOnClickListener {
+            val message = "Colloborate on this note with ${App.app.prefManager.logginUserData?.name}! Here is the link: https://example.com"
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, message)
+            }
+
+            val chooser = Intent.createChooser(intent, "Share this message via")
+            startActivity(chooser)
+
         }
     }
 

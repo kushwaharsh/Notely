@@ -41,6 +41,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_premiumFragment)
         }
 
+        binding.notificationsTv.setOnClickListener{
+            findNavController().navigate(R.id.action_profileFragment_to_notificationFragment)
+        }
+
         binding.logoutTv.setOnClickListener {
             val dialogBinding = DialogLayoutBinding.inflate(layoutInflater)
             val layoutDialog = BlurDialog(requireActivity(), R.style.TransparentDialogTheme)

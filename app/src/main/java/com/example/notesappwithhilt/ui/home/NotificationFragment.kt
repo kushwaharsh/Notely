@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.notesappwithhilt.R
 import com.example.notesappwithhilt.databinding.FragmentNotificationBinding
 import com.suke.widget.SwitchButton
@@ -24,8 +25,15 @@ class NotificationFragment : Fragment() {
         binding = FragmentNotificationBinding.inflate(inflater , container , false)
         
         initview()
+        listner()
         
         return binding.root
+    }
+
+    private fun listner() {
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun initview() {

@@ -230,7 +230,7 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.tagBarRV.adapter = tagAdapter
 
-        binding.userNameTv.text = "Welcome Back. ${prefManager.logginUserData?.name ?: "Guest"}"
+        binding.userNameTv.text = "Welcome Back  ${prefManager.logginUserData?.name ?: "Guest"}"
         binding.useremailTv.text = prefManager.logginUserData?.email ?: "Unauthorized Access"
     }
 
