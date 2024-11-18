@@ -4,14 +4,17 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.example.notesappwithhilt.databinding.NotesEachItemLayoutBinding
 import com.example.notesappwithhilt.models.Note
+import com.google.android.material.snackbar.Snackbar
 
 class GetAllNotesAdapter(
     private var notesList: List<Note>,
@@ -19,10 +22,43 @@ class GetAllNotesAdapter(
     val clickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<GetAllNotesAdapter.ViewHolder>() {
 
+    private var filteredNotesList = notesList // New list to store filtered notes
+    private val handler = Handler(Looper.getMainLooper())
+    private var typingFinishedRunnable: Runnable? = null
+
     fun setNewList(newList: List<Note>, newNoteColors: List<String>) {
         this.notesList = newList
         this.noteColors = newNoteColors
-        notifyDataSetChanged()  // You can use more granular notify methods like notifyItemRangeChanged() for better performance.
+        this.filteredNotesList = newList // Update filtered list as well
+        notifyDataSetChanged()
+    }
+
+    // Function to filter notes based on search query
+    // Function to filter notes based on search query and show Snackbar if no matches are found
+    fun filter(query: String, parentView: View) {
+        filteredNotesList = if (query.isEmpty()) {
+            notesList
+        } else {
+            notesList.filter { note ->
+                note.title.contains(query, ignoreCase = true) ||
+                        note.content.contains(query, ignoreCase = true)
+            }
+        }
+
+        notifyDataSetChanged()
+
+        // Cancel any existing delayed toast if user continues typing
+        typingFinishedRunnable?.let { handler.removeCallbacks(it) }
+
+        // Create a new runnable to display the toast with delay
+        typingFinishedRunnable = Runnable {
+            if (filteredNotesList.isEmpty()) {
+                Snackbar.make(parentView, "No Note Found", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        // Post the toast display with delay (e.g., 500ms)
+        handler.postDelayed(typingFinishedRunnable!!, 500)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,12 +67,12 @@ class GetAllNotesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val note = notesList[position]
-        val noteColor = noteColors[position] // Fallback to white if color list is shorter
+        val note = filteredNotesList[position]
+        val noteColor = if (position < noteColors.size) noteColors[position] else "FFFFFF" // Fallback to white if color list is shorter
         holder.bind(note, position, noteColor)
     }
 
-    override fun getItemCount(): Int = notesList.size
+    override fun getItemCount(): Int = filteredNotesList.size
 
     inner class ViewHolder(private val binding: NotesEachItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -45,6 +81,12 @@ class GetAllNotesAdapter(
 
             // Show bookmark view based on isBookmarked status
             binding.bookmarkView.visibility = if (note.isBookmarked == true) View.VISIBLE else View.GONE
+
+            if (note.tag == "Finished"){
+                binding.finishedStamp.visibility = View.VISIBLE
+            }else{
+                binding.finishedStamp.visibility = View.GONE
+            }
 
             // Set note content or whiteboard based on the note's content
             if (note.content.isEmpty()) {
@@ -81,9 +123,8 @@ class GetAllNotesAdapter(
     // Helper function to decode Base64 string to Bitmap
     private fun decodeBase64ToBitmap(base64Str: String): Bitmap? {
         return try {
-            val decodedBytes = Base64.decode(base64Str, Base64.NO_WRAP) // Ensure to decode without wrap
+            val decodedBytes = Base64.decode(base64Str, Base64.NO_WRAP)
             BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)?.let {
-                // Return the bitmap or null if decoding fails
                 if (it.width > 0 && it.height > 0) it else null
             }
         } catch (e: IllegalArgumentException) {

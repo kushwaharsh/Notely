@@ -44,18 +44,18 @@
             android:textSize="25sp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:src="@drawable/profile_ic_notely" />
+            android:src="@drawable/setting_dummy" />
 
         <TextView
             android:id="@+id/userNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/segoe_ui_bold"
             android:text="Harsh Raj Kushwaha"
             android:textColor="@color/white"

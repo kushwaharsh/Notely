@@ -56,5 +56,9 @@ interface ApiService {
     @GET(KeyConstants.GET_ALL_TAGS)
     suspend fun getAllTags(@Query("userId") userId : String) : GetAllTagsResponse
 
+    @GET(KeyConstants.DELETE_ACCOUNT)
+    suspend fun deleteAccount(@Header("Authorization") token: String,
+                              @Query("userId") userId : String) : SignUpResponse
+
 
 }

@@ -130,17 +130,36 @@
             app:destination="@id/premiumFragment" />
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_profileFragment_to_notificationFragment"
             app:destination="@id/notificationFragment" />
         <action
             android:id="@+id/action_profileFragment_to_notificationFragment2"
             app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment2"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.notesappwithhilt.ui.home.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.notesappwithhilt.ui.profile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
 </navigation>

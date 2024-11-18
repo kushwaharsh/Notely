@@ -43,11 +43,11 @@ class RegisterFragment : Fragment() {
         observer()
 
         return binding.root
-    }
+}
 
     private fun observer() {
         authViewModel.registerUser.observe(viewLifecycleOwner) {
-            when (it) {
+            when(it) {
                 Resource.Loading -> {
                     ProgressBarUtils.showProgressDialog(requireContext())
                 }
@@ -89,15 +89,6 @@ class RegisterFragment : Fragment() {
             params["password"] = binding.enterPassword.text.toString()
             authViewModel.registerUser(params)
 
-//            when(responseData?.success ){
-//                true -> {
-//
-//                }
-//                false -> {
-//
-//                }
-//                null -> {}
-//            }
         }
     }
 

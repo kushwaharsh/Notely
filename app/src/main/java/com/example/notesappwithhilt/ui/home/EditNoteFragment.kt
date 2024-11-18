@@ -168,6 +168,7 @@ class EditNoteFragment : Fragment() {
             // put("tag", createdTag ?: "All")
         }
 
+        Log.d("userIdHere" , App.app.prefManager.logginUserData?._id.toString())
         // Call ViewModel method to create the note
         authViewModel.updateNote(App.app.prefManager.accessToken.toString(), receivedNoteId, params , App.app.prefManager.logginUserData?._id?:"")
     }

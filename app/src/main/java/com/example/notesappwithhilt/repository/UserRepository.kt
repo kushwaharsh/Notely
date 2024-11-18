@@ -43,4 +43,8 @@ class UserRepository @Inject constructor(private val apiService: ApiService ) : 
     suspend fun getAllTags(userId : String) = safeApiCall {
         apiService.getAllTags(userId)
     }
+
+    suspend fun deleteAccount(token: String , userId: String) = safeApiCall {
+        apiService.deleteAccount(token , userId)
+    }
 }

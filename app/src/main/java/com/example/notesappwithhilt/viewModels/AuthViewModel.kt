@@ -108,4 +108,14 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
             _getAllTags.value = userRepository.getAllTags(userId)
         }
     }
+
+    private val _deleteAccount : MutableLiveData<Resource<SignUpResponse?>?> = MutableLiveData()
+    val deleteAccount : LiveData<Resource<SignUpResponse?>?>
+        get() = _deleteAccount
+    fun deleteAccount(token: String , userId: String){
+        viewModelScope.launch {
+            _deleteAccount.value = Resource.Loading
+            _deleteAccount.value = userRepository.deleteAccount(token , userId)
+        }
+    }
 }

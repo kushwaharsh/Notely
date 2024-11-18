@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -7,49 +9,73 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/noteTitleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@id/bookmarkView"
+                android:ellipsize="end"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:maxLines="2"
+                android:text="This is the title of note"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/bookmarkView"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_add_tag"
+                android:visibility="gone" />
+        </RelativeLayout>
+
 
         <TextView
-            android:id="@+id/noteTitleTv"
-            android:layout_width="wrap_content"
+            android:id="@+id/noteContentTv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="8dp"
-            android:layout_toStartOf="@id/bookmarkView"
             android:ellipsize="end"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:maxLines="2"
+            android:fontFamily="@font/segoe_ui"
             android:text="This is the title of note"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/bookmarkView"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_add_tag"/>
-    </RelativeLayout>
+            android:id="@+id/noteBoardTv"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
 
-
-    <TextView
-        android:id="@+id/noteContentTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:fontFamily="@font/segoe_ui"
-        android:text="This is the title of note"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+    </LinearLayout>
 
     <ImageView
-        android:id="@+id/noteBoardTv"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:id="@+id/finishedStamp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:translationZ="1dp"
         android:visibility="gone"
-        android:scaleType="fitXY"/>
-
-</LinearLayout>
+        android:src="@drawable/finished_img"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

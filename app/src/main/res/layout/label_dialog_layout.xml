@@ -28,8 +28,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:tabTextColor="@color/greyText"
-    app:tabSelectedTextColor="@color/button_bg"
-    app:tabIndicatorColor="@color/button_bg"
+    app:tabSelectedTextColor="@color/red"
+    app:tabIndicatorColor="@color/red"
     app:tabIndicatorFullWidth="true"
     app:tabRippleColor="@null" />
 

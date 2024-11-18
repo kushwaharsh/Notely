@@ -1,6 +1,8 @@
 package com.example.notesappwithhilt.ui.home
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -82,12 +84,12 @@ class HomeFragment : Fragment() {
                     if (it.value?.statusCode == KeyConstants.SUCCESS) {
                         notesList = it.value.notes as ArrayList<Note>
 
-                        if (it.value.notes.isEmpty()){
+                        if (it.value.notes.isEmpty()) {
                             binding.createFirstNoteLayout.visibility = View.VISIBLE
                             binding.allNotesRV.visibility = View.GONE
                             binding.createNoteBtn.visibility = View.GONE
                             binding.tagBarRV.visibility = View.GONE
-                        }else{
+                        } else {
                             binding.createFirstNoteLayout.visibility = View.GONE
                             binding.allNotesRV.visibility = View.VISIBLE
                             binding.createNoteBtn.visibility = View.VISIBLE
@@ -105,13 +107,16 @@ class HomeFragment : Fragment() {
                         }
 
                         filterData("All", noteColors)
-
-
                     }
                 }
+
                 is Resource.Faliure -> {
                     ProgressBarUtils.hideProgressDialog()
-                    Toast.makeText(requireContext(), "Something Went Wrong with notes", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        "Something Went Wrong with notes",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
 
@@ -135,7 +140,11 @@ class HomeFragment : Fragment() {
 
                 is Resource.Faliure -> {
                     ProgressBarUtils.hideProgressDialog()
-                    Toast.makeText(requireContext(), "Something Went Wrong with tags", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        "Something Went Wrong with tags",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
 
@@ -148,15 +157,16 @@ class HomeFragment : Fragment() {
         if (tag.equals("All", ignoreCase = true)) {
             noteAdapter.setNewList(notesList, noteColors)
         } else {
-            filterTagList = notesList.filter { tag.equals(it.tag, ignoreCase = true) } as ArrayList<Note>
+            filterTagList =
+                notesList.filter { tag.equals(it.tag, ignoreCase = true) } as ArrayList<Note>
             noteAdapter.setNewList(filterTagList, noteColors)
         }
     }
 
     private fun listener() {
-        binding.createFirstNoteBtn.setOnClickListener{
+        binding.createFirstNoteBtn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_createNoteFragment)
-    }
+        }
 
         binding.createNoteBtn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_createNoteFragment)
@@ -194,7 +204,8 @@ class HomeFragment : Fragment() {
         noteAdapter = GetAllNotesAdapter(notesList, noteColors) { position ->
             val clickedNote = notesList[position]
             val clickedNoteId = clickedNote._id
-            val clickedNoteColor = noteColorMap[clickedNoteId] ?: colorList[position % colorList.size]
+            val clickedNoteColor =
+                noteColorMap[clickedNoteId] ?: colorList[position % colorList.size]
             val bundle = Bundle().apply {
                 putString("ClickedNoteId", clickedNoteId)
                 putString("ClickedNoteColor", clickedNoteColor)
@@ -230,14 +241,32 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.tagBarRV.adapter = tagAdapter
 
-        binding.userNameTv.text = "Welcome Back  ${prefManager.logginUserData?.name ?: "Guest"}"
+        binding.userNameTv.text = "Welcome Back ${prefManager.logginUserData?.name ?: "Guest"}"
         binding.useremailTv.text = prefManager.logginUserData?.email ?: "Unauthorized Access"
+
+
+        //search Code here
+        binding.searchbarTV.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                 noteAdapter.filter(s.toString() , binding.root)
+
+                Log.d("onTextChange", s.toString())
+
+            }
+        })
     }
 
     override fun onResume() {
         super.onResume()
         Log.d("appToken", prefManager.accessToken ?: "")
-        authViewModel.getAllNotes(prefManager.accessToken ?: "" , prefManager.logginUserData?._id?:"")
+        authViewModel.getAllNotes(
+            prefManager.accessToken ?: "",
+            prefManager.logginUserData?._id ?: ""
+        )
         authViewModel.getAllTags(prefManager.logginUserData?._id.toString())
     }
 }

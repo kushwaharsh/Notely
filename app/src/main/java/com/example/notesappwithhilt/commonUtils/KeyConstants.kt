@@ -17,4 +17,5 @@ object KeyConstants {
     const val UPDATE_NOTE = "notes/updateNote"
     const val CREATE_TAG = "tags/createTag"
     const val GET_ALL_TAGS = "tags/getAllTags"
+    const val DELETE_ACCOUNT = "auth/user/deleteAccount"
 }

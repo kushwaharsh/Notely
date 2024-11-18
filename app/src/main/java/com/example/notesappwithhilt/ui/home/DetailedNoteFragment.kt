@@ -65,6 +65,13 @@ class DetailedNoteFragment : Fragment() {
 
                         binding.noteTitleTv.text = it.value.note?.title.toString()
 
+                        if (it.value.note?.tag == "Finished"){
+                            binding.finishedStamp.visibility = View.VISIBLE
+                            binding.editLinearLayout.visibility = View.GONE
+                        }else{
+                            binding.finishedStamp.visibility = View.GONE
+                            binding.editLinearLayout.visibility = View.VISIBLE
+                        }
 
                         if (it.value.note?.content?.isEmpty() == true){
                              binding.noteContentTv.visibility = View.GONE
@@ -125,6 +132,29 @@ class DetailedNoteFragment : Fragment() {
                 null -> {}
             }
         }
+
+        authViewModel.updateNote.observe(viewLifecycleOwner) {
+            when (it) {
+                Resource.Loading -> {
+                    ProgressBarUtils.showProgressDialog(requireContext())
+                }
+
+                is Resource.Success -> {
+                    ProgressBarUtils.hideProgressDialog()
+                    if (it.value?.statusCode == KeyConstants.SUCCESS) {
+                        Toast.makeText(requireContext(), "Task Finished", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
+                }
+
+                is Resource.Faliure -> {
+                    ProgressBarUtils.hideProgressDialog()
+                    Toast.makeText(requireContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                }
+
+                null -> {}
+            }
+        }
     }
 
     private fun listener() {
@@ -137,9 +167,6 @@ class DetailedNoteFragment : Fragment() {
             dialogBinding.dialogTitle.text = "Delete Note"
             dialogBinding.dialogSubTitle.text = "Are you sure you want to delete this note ?"
 
-            dialogBinding.crossBtn.setOnClickListener {
-                layoutDialog.dismiss()
-            }
 
             dialogBinding.btnCancel.setOnClickListener {
                 layoutDialog.dismiss()
@@ -150,6 +177,25 @@ class DetailedNoteFragment : Fragment() {
                     receivedNoteId.toString(),
                     App.app.prefManager.logginUserData?._id?:"",
                 )
+                layoutDialog.dismiss()
+            }
+
+            layoutDialog.show()
+        }
+
+        binding.finishBnt.setOnClickListener {
+            val dialogBinding = DialogLayoutBinding.inflate(layoutInflater)
+            val layoutDialog = BlurDialog(requireActivity(), R.style.TransparentDialogTheme)
+            layoutDialog.setContentView(dialogBinding.root)
+
+            dialogBinding.dialogTitle.text = "Task Finished ?"
+            dialogBinding.dialogSubTitle.text = "Have you completed this task and wanna mark this note as finished ?"
+
+            dialogBinding.btnCancel.setOnClickListener {
+                layoutDialog.dismiss()
+            }
+            dialogBinding.btnConfirm.setOnClickListener {
+                markFinished()
                 layoutDialog.dismiss()
             }
 
@@ -192,6 +238,24 @@ class DetailedNoteFragment : Fragment() {
             receivedNoteId.toString(),
             App.app.prefManager.logginUserData?._id?:""
         )
+
+    }
+
+
+    private fun markFinished() {
+        val params = HashMap<String, String>().apply {
+            put("title", noteDetails?.title.toString())
+            put("content", noteDetails?.content.toString())
+            if (noteDetails?.whiteboard != null) {
+                put("whiteboard", noteDetails?.whiteboard.toString())  // Add Base64 content if available
+            }
+           // put("isBookmarked", noteDetails?.isBookmarked.toString())
+            put("tag", "Finished")
+        }
+
+        // Call ViewModel method to create the note
+        Log.d("noteIdHere" , receivedNoteId)
+        authViewModel.updateNote(App.app.prefManager.accessToken.toString(), receivedNoteId, params , App.app.prefManager.logginUserData?._id?:"")
 
     }
 

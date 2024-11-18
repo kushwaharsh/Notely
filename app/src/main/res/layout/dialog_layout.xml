@@ -6,18 +6,9 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/crossBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_cross_btn" />
-
-
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="260dp"
         android:background="@drawable/dialog_box_style"
         android:orientation="vertical"
         android:padding="20dp">
@@ -54,8 +45,7 @@
             android:layout_height="50dp"
             android:layout_above="@+id/btn_confirm"
             android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_style"
-            android:backgroundTint="@color/button_bg"
+            android:background="@drawable/rounded_border_red"
             android:fontFamily="@font/segoe_ui_semibold"
             android:gravity="center"
             android:text="No"
@@ -69,7 +59,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="10dp"
             android:background="@drawable/edittext_style_border"
-            android:backgroundTint="@color/button_bg"
+            android:backgroundTint="@color/red"
             android:fontFamily="@font/segoe_ui_semibold"
             android:gravity="center"
             android:text="Yes"
