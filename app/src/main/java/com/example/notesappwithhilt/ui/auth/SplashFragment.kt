@@ -13,8 +13,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.notesappwithhilt.R
 import com.example.notesappwithhilt.commonUtils.App
 import com.example.notesappwithhilt.databinding.FragmentSplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SplashFragment : Fragment() {
 
     private lateinit var binding: FragmentSplashBinding

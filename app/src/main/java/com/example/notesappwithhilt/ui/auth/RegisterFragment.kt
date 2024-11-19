@@ -63,12 +63,13 @@ class RegisterFragment : Fragment() {
                         findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                         Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
                     } else {
-                        binding.signInWarning.visibility = View.VISIBLE
+                         Toast.makeText(requireContext(), "Registration Failed", Toast.LENGTH_SHORT).show()
+
                     }
                 }
                 is Resource.Faliure -> {
                     ProgressBarUtils.hideProgressDialog()
-                    Toast.makeText(requireContext(), "Registration Failed", Toast.LENGTH_SHORT).show()
+                    binding.signInWarning.visibility = View.VISIBLE
                 }
                 null -> {}
             }
@@ -77,19 +78,59 @@ class RegisterFragment : Fragment() {
 
 
     private fun listener() {
-
         binding.gotoSignInPage.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
-        binding.registerBtn.setOnClickListener{
-            val params = HashMap<String , String>()
-            params["name"] = binding.enterName.text.toString()
-            params["email"] = binding.enterEmail.text.toString()
-            params["password"] = binding.enterPassword.text.toString()
-            authViewModel.registerUser(params)
+        binding.registerBtn.setOnClickListener {
+            val name = binding.enterName.text.toString()
+            val email = binding.enterEmail.text.toString()
+            val password = binding.enterPassword.text.toString()
 
+            // Validate name, email, and password
+            if (name.isEmpty()) {
+                showToast("Name is required")
+                return@setOnClickListener
+            }
+
+            if (email.isEmpty()) {
+                showToast("Email is required")
+                return@setOnClickListener
+            }
+
+            if (!isValidEmail(email)) {
+                showToast("Invalid email format")
+                return@setOnClickListener
+            }
+
+            if (password.isEmpty()) {
+                showToast("Password is required")
+                return@setOnClickListener
+            }
+
+            if (password.length < 6) {
+                showToast("Password must be at least 6 characters")
+                return@setOnClickListener
+            }
+
+            // If validation passes, proceed with registration
+            val params = HashMap<String, String>()
+            params["name"] = name
+            params["email"] = email
+            params["password"] = password
+            authViewModel.registerUser(params)
         }
     }
+
+    // Utility function to check valid email format
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    // Function to show toast messages
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
 
 }

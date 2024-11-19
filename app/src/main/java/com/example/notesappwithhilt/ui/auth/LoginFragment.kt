@@ -72,12 +72,13 @@ class LoginFragment : Fragment() {
                         Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                     } else {
                         ProgressBarUtils.hideProgressDialog()
-                        binding.registerWarning.visibility = View.VISIBLE
+                         Toast.makeText(requireContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show()
+
                     }
                 }
                 is Resource.Faliure -> { // Fixed typo: 'Faliure' to 'Failure'
                     ProgressBarUtils.hideProgressDialog()
-                    Toast.makeText(requireContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                    binding.registerWarning.visibility = View.VISIBLE
                 }
                 null -> {}
             }
@@ -86,9 +87,29 @@ class LoginFragment : Fragment() {
 
     private fun listener() {
         binding.loginBtn.setOnClickListener {
+            val email = binding.enterEmail.text.toString()
+            val password = binding.enterPassword.text.toString()
+
+            // Validate email and password
+            if (email.isEmpty()) {
+                showToast("Email is required")
+                return@setOnClickListener
+            }
+
+            if (!isValidEmail(email)) {
+                showToast("Invalid email format")
+                return@setOnClickListener
+            }
+
+            if (password.isEmpty()) {
+                showToast("Password is required")
+                return@setOnClickListener
+            }
+
+            // If validation passes, proceed with sign-in
             val params = HashMap<String, String>()
-            params["email"] = binding.enterEmail.text.toString()
-            params["password"] = binding.enterPassword.text.toString()
+            params["email"] = email
+            params["password"] = password
             authViewModel.signInUser(params)
         }
 
@@ -96,4 +117,15 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
     }
+
+    // Utility function to check valid email format
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    // Function to show toast messages
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
 }
