@@ -5,7 +5,8 @@ data class SignUpResponse(
     val msg: String?,
     val statusCode: Int?,
     val success: Boolean?,
-    val token: String?
+    val token: String?,
+    val isExists : Boolean?
 )
 
 data class LoginData(
@@ -17,6 +18,5 @@ data class LoginData(
     val email: String?,
     val id: String?,
     val name: String?,
-    val password: String?,
     val subscriptionPlanStatus: String?
 )

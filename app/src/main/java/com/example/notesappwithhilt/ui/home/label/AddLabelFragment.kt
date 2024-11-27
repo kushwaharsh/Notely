@@ -107,7 +107,7 @@ class AddLabelFragment(val layoutDialog: BlurDialog, var labelName: (String) -> 
 
     override fun onResume() {
         super.onResume()
-        authViewModel.getAllTags(prefManager.logginUserData?._id.toString())
+        authViewModel.getAllTags( prefManager.accessToken.toString() , prefManager.logginUserData?._id.toString())
     }
 
 }

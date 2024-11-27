@@ -25,7 +25,6 @@ import javax.inject.Inject
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
-    var responseData : SignUpResponse? = null
 
     @Inject
     lateinit var prefManager: PrefManager
@@ -39,11 +38,16 @@ class RegisterFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater , container , false)
 
+        initview()
         listener()
         observer()
 
         return binding.root
 }
+
+    private fun initview() {
+        binding.enterEmail.setText(arguments?.getString("user_email"))
+    }
 
     private fun observer() {
         authViewModel.registerUser.observe(viewLifecycleOwner) {
@@ -53,13 +57,13 @@ class RegisterFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     ProgressBarUtils.hideProgressDialog()
-                    responseData = it.value // Assign the response data here
-                    if (responseData?.statusCode == KeyConstants.SUCCESSCODE) {
-                        binding.signInWarning.visibility = View.GONE
-                        App.app.prefManager.isLoggedIn = true
-                        App.app.prefManager.accessToken = responseData?.token
-                        App.app.prefManager.logginUserData = responseData?.data
-                        Log.d("prefmanager", responseData?.token ?: "")
+                    if (it.value?.statusCode == KeyConstants.SUCCESSCODE) {
+                        prefManager.isLoggedIn = true
+                        prefManager.accessToken = it.value.token
+                        prefManager.logginUserData = it.value.data
+                        Log.d("appToken", prefManager.accessToken ?: "")
+                        Log.d("userId", prefManager.logginUserData?._id ?: "")
+
                         findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                         Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
                     } else {
@@ -69,7 +73,6 @@ class RegisterFragment : Fragment() {
                 }
                 is Resource.Faliure -> {
                     ProgressBarUtils.hideProgressDialog()
-                    binding.signInWarning.visibility = View.VISIBLE
                 }
                 null -> {}
             }
@@ -78,14 +81,9 @@ class RegisterFragment : Fragment() {
 
 
     private fun listener() {
-        binding.gotoSignInPage.setOnClickListener {
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-        }
 
         binding.registerBtn.setOnClickListener {
             val name = binding.enterName.text.toString()
-            val email = binding.enterEmail.text.toString()
-            val password = binding.enterPassword.text.toString()
 
             // Validate name, email, and password
             if (name.isEmpty()) {
@@ -93,38 +91,13 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if (email.isEmpty()) {
-                showToast("Email is required")
-                return@setOnClickListener
-            }
-
-            if (!isValidEmail(email)) {
-                showToast("Invalid email format")
-                return@setOnClickListener
-            }
-
-            if (password.isEmpty()) {
-                showToast("Password is required")
-                return@setOnClickListener
-            }
-
-            if (password.length < 6) {
-                showToast("Password must be at least 6 characters")
-                return@setOnClickListener
-            }
-
             // If validation passes, proceed with registration
             val params = HashMap<String, String>()
+            val email_user = arguments?.getString("user_email")
             params["name"] = name
-            params["email"] = email
-            params["password"] = password
+            params["email"] = email_user.toString()
             authViewModel.registerUser(params)
         }
-    }
-
-    // Utility function to check valid email format
-    private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     // Function to show toast messages

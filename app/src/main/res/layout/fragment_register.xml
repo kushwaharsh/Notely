@@ -41,6 +41,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/notes_img" />
 
             <TextView
@@ -60,7 +61,7 @@
                 android:fontFamily="@font/segoe_ui_bold"
                 android:gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="Create New Account"
+                android:text="Create an Account"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
@@ -109,6 +110,7 @@
                 android:id="@+id/enterEmail"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:enabled="false"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_border_grey"
                 android:fontFamily="@font/segoe_ui_semibold"
@@ -117,43 +119,12 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="Password"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/enterPassword"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="40dp"
-                android:background="@drawable/rounded_border_grey"
-                android:fontFamily="@font/segoe_ui_semibold"
-                android:hint="Enter Your Password"
-                android:paddingStart="20dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/signInWarning"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/segoe_ui_semibold"
-                android:gravity="center"
-                android:text="Account already exist !! Please Sign In"
-                android:textColor="@color/red"
-                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/registerBtn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/rounded_border_red"
                 android:text="Register"
                 android:textColor="@color/white" />
@@ -162,26 +133,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="100dp"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="150dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/segoe_ui"
-                    android:text="Already have an account ?"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:text="By creating your account you agree to our"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/gotoSignInPage"
+                    android:id="@+id/termsAndConditoins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
                     android:fontFamily="@font/segoe_ui_bold"
-                    android:text="Sign In"
+                    android:text="Terms &amp; conditions &amp; privacy policy"
                     android:textColor="@color/red"
                     android:textSize="16sp" />
             </LinearLayout>

@@ -7,6 +7,7 @@ import com.example.notesappwithhilt.models.GetAllNotesResponse
 import com.example.notesappwithhilt.models.GetAllTagsResponse
 import com.example.notesappwithhilt.models.NewNote
 import com.example.notesappwithhilt.models.NoteByIdResponse
+import com.example.notesappwithhilt.models.SendOtpResponse
 import com.example.notesappwithhilt.models.SignUpResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -22,8 +23,10 @@ interface ApiService {
     @POST(KeyConstants.REGISTER_USER)
     suspend fun registerUser(@Body params: HashMap<String, String>): SignUpResponse?
 
-    @POST(KeyConstants.SIGN_IN)
-    suspend fun signInUser(@Body params: HashMap<String, String>): SignUpResponse?
+    @POST(KeyConstants.VERIFY_OTP)
+    suspend fun verifyOtp(@Body params: HashMap<String, String>): SignUpResponse?
+    @POST(KeyConstants.SEND_OTP)
+    suspend fun sendOtp(@Body params: HashMap<String, String>): SendOtpResponse?
 
     @GET(KeyConstants.GET_ALL_NOTES)
     suspend fun getAllNotes(@Header("Authorization") token: String,
@@ -54,7 +57,8 @@ interface ApiService {
     suspend fun createTag(@Body params: HashMap<String, String>) : CreateTagResponse
 
     @GET(KeyConstants.GET_ALL_TAGS)
-    suspend fun getAllTags(@Query("userId") userId : String) : GetAllTagsResponse
+    suspend fun getAllTags(@Header("Authorization") token: String,
+                           @Query("userId") userId : String) : GetAllTagsResponse
 
     @GET(KeyConstants.DELETE_ACCOUNT)
     suspend fun deleteAccount(@Header("Authorization") token: String,

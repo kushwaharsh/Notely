@@ -4,6 +4,7 @@ object KeyConstants {
 
     const val SUCCESS = 200
     const val SUCCESSCODE = 201
+    const val SECUTIRY_LOGOUT = 401
     const val TAG = "MYNOTESAPP"
     const val PREF_NAME = "notes_app1"
     const val BASE_URL = "https://notes-app-backend-lyart.vercel.app/api/"
@@ -18,4 +19,6 @@ object KeyConstants {
     const val CREATE_TAG = "tags/createTag"
     const val GET_ALL_TAGS = "tags/getAllTags"
     const val DELETE_ACCOUNT = "auth/user/deleteAccount"
+    const val SEND_OTP = "auth/sendOtp"
+    const val VERIFY_OTP = "auth/verifyOtp"
 }

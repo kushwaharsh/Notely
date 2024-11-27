@@ -12,9 +12,9 @@ class PrefManager @Inject constructor(@ApplicationContext context: Context) {
     private val editor = sharedPref.edit()
 
     var accessToken: String?
-        get() = sharedPref.getString("accessTokena", "") // Ensure consistent naming
+        get() = sharedPref.getString("accessToken", "") // Ensure consistent naming
         set(token) {
-            editor.putString("accessTokena", token).apply()
+            editor.putString("accessToken", token).apply()
         }
 
     var isLoggedIn: Boolean
@@ -25,7 +25,7 @@ class PrefManager @Inject constructor(@ApplicationContext context: Context) {
 
     var logginUserData: LoginData?
         get() {
-            val json = sharedPref.getString(Enums.LoginUserData.toString(), null)
+            val json = sharedPref.getString(Enums.LoginUserData.toString(), "")
             val type = object : TypeToken<LoginData?>() {}.type
             return Gson().fromJson(json, type)
         }

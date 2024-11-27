@@ -10,6 +10,7 @@ import com.example.notesappwithhilt.models.CreateTagResponse
 import com.example.notesappwithhilt.models.GetAllNotesResponse
 import com.example.notesappwithhilt.models.GetAllTagsResponse
 import com.example.notesappwithhilt.models.NoteByIdResponse
+import com.example.notesappwithhilt.models.SendOtpResponse
 import com.example.notesappwithhilt.models.SignUpResponse
 import com.example.notesappwithhilt.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,13 +30,23 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
         }
     }
 
-    private val _signInUser : MutableLiveData<Resource<SignUpResponse?>?> = MutableLiveData()
-    val signInUser : LiveData<Resource<SignUpResponse?>?>
-        get() = _signInUser
-    fun signInUser(params: HashMap<String, String>){
+    private val _sendOtp : MutableLiveData<Resource<SendOtpResponse?>?> = MutableLiveData()
+    val sendOtp : LiveData<Resource<SendOtpResponse?>?>
+        get() = _sendOtp
+    fun sendOtp(params: HashMap<String, String>){
         viewModelScope.launch {
-            _signInUser.value = Resource.Loading
-            _signInUser.value = userRepository.signInUser(params)
+            _sendOtp.value = Resource.Loading
+            _sendOtp.value = userRepository.sendOtp(params)
+        }
+    }
+
+    private val _verifyOtp : MutableLiveData<Resource<SignUpResponse?>?> = MutableLiveData()
+    val verifyOtp : LiveData<Resource<SignUpResponse?>?>
+        get() = _verifyOtp
+    fun verifyOtp(params: HashMap<String, String>){
+        viewModelScope.launch {
+            _verifyOtp.value = Resource.Loading
+            _verifyOtp.value = userRepository.verifyOtp(params)
         }
     }
 
@@ -102,10 +113,10 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
     private val _getAllTags : MutableLiveData<Resource<GetAllTagsResponse?>?> = MutableLiveData()
     val getAllTags : LiveData<Resource<GetAllTagsResponse?>?>
         get() = _getAllTags
-    fun getAllTags(userId : String){
+    fun getAllTags( token: String ,userId : String){
         viewModelScope.launch {
             _getAllTags.value = Resource.Loading
-            _getAllTags.value = userRepository.getAllTags(userId)
+            _getAllTags.value = userRepository.getAllTags(token , userId)
         }
     }
 

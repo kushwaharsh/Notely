@@ -13,8 +13,8 @@ android {
         applicationId = "com.example.notesappwithhilt"
         minSdk = 24
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,6 +78,7 @@ dependencies {
     //Circular Image View
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
+    implementation ("io.github.chaosleung:pinview:1.4.4")
 
     implementation("com.github.zcweng:switch-button:0.0.3@aar")
 

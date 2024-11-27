@@ -12,8 +12,12 @@ class UserRepository @Inject constructor(private val apiService: ApiService ) : 
         apiService.registerUser(params)
     }
 
-    suspend fun signInUser(params: HashMap<String , String>) = safeApiCall{
-        apiService.signInUser(params)
+    suspend fun sendOtp(params: HashMap<String , String>) = safeApiCall{
+        apiService.sendOtp(params)
+    }
+
+    suspend fun verifyOtp(params: HashMap<String , String>) = safeApiCall{
+        apiService.verifyOtp(params)
     }
 
     suspend fun getAllNotes(token: String , userId: String) = safeApiCall {
@@ -40,8 +44,8 @@ class UserRepository @Inject constructor(private val apiService: ApiService ) : 
         apiService.createTag(params)
     }
 
-    suspend fun getAllTags(userId : String) = safeApiCall {
-        apiService.getAllTags(userId)
+    suspend fun getAllTags(token: String , userId : String) = safeApiCall {
+        apiService.getAllTags(token ,userId)
     }
 
     suspend fun deleteAccount(token: String , userId: String) = safeApiCall {

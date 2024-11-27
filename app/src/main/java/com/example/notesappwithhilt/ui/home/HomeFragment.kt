@@ -8,17 +8,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notesappwithhilt.R
+import com.example.notesappwithhilt.commonUtils.App
+import com.example.notesappwithhilt.commonUtils.BlurDialog
 import com.example.notesappwithhilt.commonUtils.KeyConstants
 import com.example.notesappwithhilt.commonUtils.PrefManager
 import com.example.notesappwithhilt.commonUtils.ProgressBarUtils
 import com.example.notesappwithhilt.commonUtils.Resource
+import com.example.notesappwithhilt.databinding.DialogLayoutBinding
 import com.example.notesappwithhilt.databinding.FragmentHomeBinding
 import com.example.notesappwithhilt.models.Note
 import com.example.notesappwithhilt.models.TagList
@@ -72,6 +77,37 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    private fun showSecurityLogoutDialog() {
+        val dialogBinding = DialogLayoutBinding.inflate(layoutInflater)
+        val layoutDialog = BlurDialog(requireActivity(), R.style.TransparentDialogTheme)
+        layoutDialog.setContentView(dialogBinding.root)
+
+        layoutDialog.setCancelable(false)
+        layoutDialog.setCanceledOnTouchOutside(false)
+
+        dialogBinding.dialogTitle.text = "Security Alert ?"
+        dialogBinding.dialogSubTitle.text = "Due to Security concerns your account will automatically logged out after 30 days. Please Login again !!"
+
+        dialogBinding.btnCancel.visibility = View.GONE
+        dialogBinding.btnConfirm.setText("Go to Login")
+        dialogBinding.btnConfirm.setBackgroundResource(R.drawable.rounded_border_red)
+        dialogBinding.btnConfirm.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        dialogBinding.btnConfirm.setOnClickListener {
+            App.app.prefManager.clearPreferences()
+            layoutDialog.dismiss()
+
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.homeFragment, true)
+                .setLaunchSingleTop(true)
+                .build()
+
+            findNavController().navigate(R.id.action_homeFragment_to_loginFragment, null, navOptions)
+        }
+
+        layoutDialog.show()
+    }
+
+
     private fun observer() {
         authViewModel.getAllNotes.observe(viewLifecycleOwner) {
             when (it) {
@@ -108,16 +144,12 @@ class HomeFragment : Fragment() {
 
                         filterData("All", noteColors)
                     }
+
                 }
 
                 is Resource.Faliure -> {
                     ProgressBarUtils.hideProgressDialog()
-                    Toast.makeText(
-                        requireContext(),
-                        "Something Went Wrong with notes",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                   showSecurityLogoutDialog()
                 }
 
                 null -> {}
@@ -263,11 +295,13 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("appToken", prefManager.accessToken ?: "")
+        Log.d("userId", prefManager.logginUserData?._id ?: "")
         authViewModel.getAllNotes(
-            prefManager.accessToken ?: "",
+            prefManager.accessToken ?: "" ,
             prefManager.logginUserData?._id ?: ""
         )
-        authViewModel.getAllTags(prefManager.logginUserData?._id.toString())
+
+        authViewModel.getAllTags(prefManager.accessToken.toString() , prefManager.logginUserData?.id.toString())
     }
 }
 

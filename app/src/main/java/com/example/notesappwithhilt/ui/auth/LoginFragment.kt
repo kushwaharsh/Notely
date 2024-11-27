@@ -45,7 +45,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun observer() {
-        authViewModel.signInUser.observe(viewLifecycleOwner) { resource ->
+        authViewModel.sendOtp.observe(viewLifecycleOwner) { resource ->
             when (resource) {
 
                 Resource.Loading -> {
@@ -55,21 +55,12 @@ class LoginFragment : Fragment() {
                     ProgressBarUtils.hideProgressDialog()
                     // Check if response is successful
                     if (resource.value?.statusCode == KeyConstants.SUCCESS) {
-                        binding.registerWarning.visibility = View.GONE
-                        App.app.prefManager.isLoggedIn = true // Changed to true on successful login
-
-                        // Set the response data correctly to ensure it's not null
-                        responseData = resource.value // <-- Store the response data here
-
-                        // Ensure we only save token and user data if they are not null
-                        responseData?.let { data ->
-                            Log.d("LoginToken", data.token.toString())
-                            App.app.prefManager.accessToken = data.token // Save access token
-                            App.app.prefManager.logginUserData = data.data // Save user data
+                        val email = resource.value.email
+                        val bundle = Bundle().apply {
+                            putString("user_email", email)
                         }
-
-                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                        Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_loginFragment_to_otpFragment , bundle)
+                        Toast.makeText(requireContext(), "OTP sent Successfully", Toast.LENGTH_SHORT).show()
                     } else {
                         ProgressBarUtils.hideProgressDialog()
                          Toast.makeText(requireContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show()
@@ -78,7 +69,6 @@ class LoginFragment : Fragment() {
                 }
                 is Resource.Faliure -> { // Fixed typo: 'Faliure' to 'Failure'
                     ProgressBarUtils.hideProgressDialog()
-                    binding.registerWarning.visibility = View.VISIBLE
                 }
                 null -> {}
             }
@@ -88,7 +78,6 @@ class LoginFragment : Fragment() {
     private fun listener() {
         binding.loginBtn.setOnClickListener {
             val email = binding.enterEmail.text.toString()
-            val password = binding.enterPassword.text.toString()
 
             // Validate email and password
             if (email.isEmpty()) {
@@ -100,22 +89,12 @@ class LoginFragment : Fragment() {
                 showToast("Invalid email format")
                 return@setOnClickListener
             }
-
-            if (password.isEmpty()) {
-                showToast("Password is required")
-                return@setOnClickListener
-            }
-
             // If validation passes, proceed with sign-in
             val params = HashMap<String, String>()
             params["email"] = email
-            params["password"] = password
-            authViewModel.signInUser(params)
+            authViewModel.sendOtp(params)
         }
 
-        binding.gotoRegisterationPage.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-        }
     }
 
     // Utility function to check valid email format
