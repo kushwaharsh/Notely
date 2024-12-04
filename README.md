@@ -1,3 +1,4 @@
+https://github.com/user-attachments/assets/ac6999bd-fcc6-4836-acb7-4b42300837dc
 
 # Notely
 **Your All-In-One To-Do & Collaboration Hub!**
